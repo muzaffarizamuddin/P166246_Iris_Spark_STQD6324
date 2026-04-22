@@ -4,8 +4,10 @@ from pyspark.ml.classification import DecisionTreeClassifier
 from pyspark.ml.feature import VectorAssembler, StringIndexer
 from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+from pyspark.sql.functions import lit
 
 if __name__ == "__main__":
+    # Initialize Spark Session
     spark = SparkSession.builder.appName("Iris_DecisionTree_Final").getOrCreate()
 
     # 1. Load Data
@@ -17,9 +19,8 @@ if __name__ == "__main__":
 
     # 3. Assemble Features
     # Decision Trees are scale-invariant, so raw features are fine.
-    assembler = VectorAssembler(
-        inputCols=["sepal_length", "sepal_width", "petal_length", "petal_width"], 
-        outputCol="features")
+    feature_cols = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
+    assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
     df_final = assembler.transform(df_indexed)
 
     # 4. Split Data (Consistent with other models)
@@ -55,14 +56,13 @@ if __name__ == "__main__":
     print("Best impurity: " + str(bestModel._java_obj.getImpurity()))
     print("="*40)
 
-    # 9. Comprehensive Performance Evaluation
-    predictions = cvModel.transform(test_df)
+    # 9. Final Performance Evaluation (On Test Set)
+    test_predictions = cvModel.transform(test_df)
     
-    # Calculate different metrics by updating the evaluator's metricName
-    accuracy = evaluator.setMetricName("accuracy").evaluate(predictions)
-    f1 = evaluator.setMetricName("f1").evaluate(predictions)
-    precision = evaluator.setMetricName("weightedPrecision").evaluate(predictions)
-    recall = evaluator.setMetricName("weightedRecall").evaluate(predictions)
+    accuracy = evaluator.setMetricName("accuracy").evaluate(test_predictions)
+    f1 = evaluator.setMetricName("f1").evaluate(test_predictions)
+    precision = evaluator.setMetricName("weightedPrecision").evaluate(test_predictions)
+    recall = evaluator.setMetricName("weightedRecall").evaluate(test_predictions)
     
     print("\n" + "="*40)
     print("DECISION TREE TEST METRICS")
@@ -73,9 +73,21 @@ if __name__ == "__main__":
     print("Recall:    {:.4f}".format(recall))
     print("="*40 + "\n")
 
-    # 10. Save Results for Jupyter
-    output_path = "hdfs:///user/maria_dev/assignment_1/dtree_result_2"
-    predictions.select("label", "prediction", "probability").write.mode("overwrite").parquet(output_path)
+    # 10. Prepare Full Output (Train + Test)
+    train_results = cvModel.transform(train_df).withColumn("dataset_type", lit("TRAIN"))
+    test_results = test_predictions.withColumn("dataset_type", lit("TEST"))
+    
+    final_output = train_results.union(test_results)
+    
+    # Columns to display and save
+    display_cols = feature_cols + ["label", "prediction", "probability", "dataset_type"]
+    
+    print("INSPECTING TUNED RESULTS (Sample):")
+    final_output.select(*display_cols).show(20)
+
+    # 11. Save Results for Jupyter
+    output_path = "hdfs:///user/maria_dev/assignment_1/dtree_results_3"
+    final_output.select(*display_cols).write.mode("overwrite").parquet(output_path)
 
     print("SUCCESS: Results saved to " + output_path)
     spark.stop()
