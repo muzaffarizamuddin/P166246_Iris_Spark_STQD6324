@@ -26,16 +26,18 @@ if __name__ == "__main__":
     df_final = scaler.fit(df_assembled).transform(df_assembled)
 
     # 4. Split Data (Consistent seed=42)
-    train_df, test_df = df_final.randomSplit([0.8, 0.2], seed=42)
+    train_df, test_df = df_final.randomSplit([0.7, 0.3], seed=42)
 
     # 5. Define Neural Network Architecture
-    layers = [4, 5, 4, 3]
+    layers = [4,5,4,3]
     mlp = MultilayerPerceptronClassifier(layers=layers, seed=42)
 
     # 6. Hyperparameter Grid
     paramGrid = ParamGridBuilder() \
-        .addGrid(mlp.stepSize, [0.01, 0.1]) \
-        .addGrid(mlp.maxIter, [100, 200]) \
+        .addGrid(mlp.layers, [[4, 5, 4, 3], [4, 8, 3]]) \
+        .addGrid(mlp.stepSize, [0.05, 0.1]) \
+        .addGrid(mlp.maxIter, [200]) \
+        .addGrid(mlp.blockSize, [1]) \
         .build()
 
     evaluator = MulticlassClassificationEvaluator(labelCol="label", predictionCol="prediction")
@@ -93,7 +95,7 @@ if __name__ == "__main__":
     final_output.select(*display_cols).show(20)
 
     # 11. Save Results for Jupyter
-    output_path = "hdfs:///user/maria_dev/assignment_1/mlp_results_3"
+    output_path = "hdfs:///user/maria_dev/assignment_1/mlp_results_5"
     final_output.select(*display_cols).write.mode("overwrite").parquet(output_path)
 
     print("SUCCESS: Results saved to " + output_path)

@@ -27,7 +27,7 @@ if __name__ == "__main__":
     df_final = scaler.fit(df_assembled).transform(df_assembled)
 
     # 5. Split Data (Consistent seed=42)
-    train_df, test_df = df_final.randomSplit([0.8, 0.2], seed=42)
+    train_df, test_df = df_final.randomSplit([0.7, 0.3], seed=42)
 
     # 6. Model & Hyperparameter Grid
     nb = NaiveBayes(labelCol="label", featuresCol="features")

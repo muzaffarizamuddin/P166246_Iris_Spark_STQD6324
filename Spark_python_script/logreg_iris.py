@@ -25,15 +25,19 @@ if __name__ == "__main__":
     scaler = StandardScaler(inputCol="raw_features", outputCol="features", withStd=True, withMean=True)
     df_final = scaler.fit(df_assembled).transform(df_assembled)
 
-    # 5. Split Data (80% Train, 20% Test)
-    train_df, test_df = df_final.randomSplit([0.8, 0.2], seed=42)
+    # 5. Split Data (70% Train, 30% Test)
+    train_df, test_df = df_final.randomSplit([0.7, 0.3], seed=42)
 
     # 6. Model & Hyperparameter Grid
-    lr = LogisticRegression(maxIter=20)
+    lr = LogisticRegression(maxIter=20, labelCol="label",featuresCol="features")
+    
+    reg_space = [0.001,0.002] 
+    elastic_space = [0.0001,0.00001]      
+
     paramGrid = ParamGridBuilder() \
-        .addGrid(lr.regParam, [0.01, 0.1, 0.5]) \
-        .addGrid(lr.elasticNetParam, [0.0, 0.5, 1.0]) \
-        .build()
+    .addGrid(lr.regParam, reg_space) \
+    .addGrid(lr.elasticNetParam, elastic_space) \
+    .build()
 
     evaluator = MulticlassClassificationEvaluator(labelCol="label", predictionCol="prediction")
 
@@ -82,7 +86,7 @@ if __name__ == "__main__":
     final_output.select(*display_cols).show(20)
 
     # 11. Save Results for Jupyter
-    output_path = "hdfs:///user/maria_dev/assignment_1/logreg_results_3"
+    output_path = "hdfs:///user/maria_dev/assignment_1/logreg_results_5"
     final_output.select(*display_cols).write.mode("overwrite").parquet(output_path)
 
     print("SUCCESS: Results saved to " + output_path)

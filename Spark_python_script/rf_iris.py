@@ -23,15 +23,18 @@ if __name__ == "__main__":
     df_final = assembler.transform(df_indexed)
 
     # 4. Split Data (Consistent seed=42)
-    train_df, test_df = df_final.randomSplit([0.8, 0.2], seed=42)
+    train_df, test_df = df_final.randomSplit([0.7, 0.3], seed=42)
 
     # 5. Build Random Forest Model
     rf = RandomForestClassifier(labelCol="label", featuresCol="features")
 
     # 6. Hyperparameter Grid
+
     paramGrid = ParamGridBuilder() \
-        .addGrid(rf.numTrees, [10, 20, 50]) \
-        .addGrid(rf.maxDepth, [3, 5, 10]) \
+        .addGrid(rf.numTrees, [5, 10, 15]) \
+        .addGrid(rf.maxDepth, [5, 7, 9]) \
+        .addGrid(rf.minInstancesPerNode, [5]) \
+        .addGrid(rf.subsamplingRate, [0.8, 0.9, 1.0]) \
         .build()
 
     # Base evaluator
@@ -53,6 +56,8 @@ if __name__ == "__main__":
     print("-" * 40)
     print("Best numTrees: " + str(bestModel._java_obj.getNumTrees()))
     print("Best maxDepth: " + str(bestModel._java_obj.getMaxDepth()))
+    print("Best minInstancesPerNode: " + str(bestModel._java_obj.getMinInstancesPerNode()))
+    print("Best subsamplingRate: " + str(bestModel._java_obj.getSubsamplingRate()))
     print("="*40)
 
     # 9. Feature Importance Ranking
@@ -94,7 +99,7 @@ if __name__ == "__main__":
     final_output.select(*display_cols).show(20)
 
     # 12. Save Results for Jupyter
-    output_path = "hdfs:///user/maria_dev/assignment_1/rf_results_3"
+    output_path = "hdfs:///user/maria_dev/assignment_1/rf_results_5"
     final_output.select(*display_cols).write.mode("overwrite").parquet(output_path)
 
     print("SUCCESS: Results saved to " + output_path)

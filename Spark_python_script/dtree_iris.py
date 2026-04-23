@@ -24,15 +24,16 @@ if __name__ == "__main__":
     df_final = assembler.transform(df_indexed)
 
     # 4. Split Data (Consistent with other models)
-    train_df, test_df = df_final.randomSplit([0.8, 0.2], seed=42)
+    train_df, test_df = df_final.randomSplit([0.7, 0.3], seed=42)
 
     # 5. Build Decision Tree Model
     dt = DecisionTreeClassifier(labelCol="label", featuresCol="features")
 
     # 6. Hyperparameter Grid
     paramGrid = ParamGridBuilder() \
-        .addGrid(dt.maxDepth, [2, 5, 10]) \
+        .addGrid(dt.maxDepth, [5,7,10]) \
         .addGrid(dt.impurity, ["gini", "entropy"]) \
+        .addGrid(dt.minInstancesPerNode, [1]) \
         .build()
 
     # Base evaluator
@@ -86,7 +87,7 @@ if __name__ == "__main__":
     final_output.select(*display_cols).show(20)
 
     # 11. Save Results for Jupyter
-    output_path = "hdfs:///user/maria_dev/assignment_1/dtree_results_3"
+    output_path = "hdfs:///user/maria_dev/assignment_1/dtree_results_5"
     final_output.select(*display_cols).write.mode("overwrite").parquet(output_path)
 
     print("SUCCESS: Results saved to " + output_path)
