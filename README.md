@@ -41,7 +41,7 @@ The **Iris dataset**, introduced by Ronald Fisher in 1936, is a classic multivar
 | **2** | **Random Forest** | 0.9444 | 0.9466 | Top Tier |
 | **3** | **Neural Network (MLP)**| 0.9444 | 0.9466 | Top Tier |
 | **4** | **Decision Tree** | 0.9167 | 0.9200 | Mid Tier |
-| **5** | **Naive Bayes** | 0.6667 | 0.6032 | Unsuccessful |
+| **5** | **Naive Bayes** | 0.6667 | 0.6032 | Not suitable |
 
 **Key Observations:**
 *   **Logistic Regression** performed exceptionally well, indicating the dataset's strong linear separability.
