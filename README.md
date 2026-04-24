@@ -23,7 +23,8 @@ This Colab notebook offers a fully reproducible environment:
 
 ## Dataset: Iris Species
 
-The **Iris dataset**, introduced by Ronald Fisher in 1936, is a classic multivariate dataset comprising 150 samples of iris flowers. Each sample belongs to one of three species (Iris setosa, Iris versicolor, or Iris virginica) and has four measured features: sepal length, sepal width, petal length, and petal width. It is a benchmark for classification algorithms due to its well-understood characteristics and varying degrees of class separability.
+The **Iris dataset**, introduced by Ronald Fisher in 1936, is a classic multivariate dataset comprising 150 samples of iris flowers. Each sample belongs to one of three species (Iris setosa, Iris versicolor, or Iris virginica) and has four measured features: sepal length, sepal width, petal length, and petal width. It is a benchmark for classification algorithms due to its well-understood characteristics and varying degrees of class separability. The flowers are difficult to distinguish by eye as you see in below picture:
+<img width="635" height="313" alt="IRIS-flower" src="https://github.com/user-attachments/assets/7e5e4e01-3a98-4473-9924-f3b8efa97e06" />
 
 ## Methodology
 
