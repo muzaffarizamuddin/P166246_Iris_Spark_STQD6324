@@ -1,7 +1,9 @@
 # README: Iris Species Classification using Spark MLlib
 
 ## Overview
-This project demonstrates an end-to-end Machine Learning workflow for classifying Iris flower species using Spark MLlib, executed on a Hadoop cluster (HDP 2.6.5) and optimized for Google Colab. The primary goal is to leverage distributed computing patterns for training, tuning, and evaluating multiple classification models on the classic Iris dataset. The notebook details the entire process from data loading and preprocessing to model training, hyperparameter tuning, evaluation, and finally, local deployment of the best-performing models.
+This project demonstrates an end-to-end Machine Learning workflow for classifying Iris flower species using Spark MLlib, executed on a Hadoop cluster (HDP 2.6.5) and optimized for Google Colab. The primary goal is to leverage distributed computing patterns for training, tuning, and evaluating multiple classification models on the classic Iris dataset. The notebook details the entire process from data loading and preprocessing to model training, hyperparameter tuning, evaluation, and finally, local deployment of the best-performing models. Below is a quick look into the model boundary visualization before we proceed further:
+
+<img width="1125" height="790" alt="image" src="https://github.com/user-attachments/assets/29a4c1c6-ae93-4898-a065-d9d19a9ce357" />
 
 ## Project Setup and Execution
 
