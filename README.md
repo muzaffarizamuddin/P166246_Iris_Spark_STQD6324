@@ -3,7 +3,11 @@
 ## Overview
 This project demonstrates an end-to-end Machine Learning workflow for classifying Iris flower species using Spark MLlib, executed on a Hadoop cluster (HDP 2.6.5) and optimized for Google Colab. The primary goal is to leverage distributed computing patterns for training, tuning, and evaluating multiple classification models on the classic Iris dataset. The notebook details the entire process from data loading and preprocessing to model training, hyperparameter tuning, evaluation, and finally, local deployment of the best-performing models. Below is a quick look into the model boundary visualization before we proceed further:
 
-<img width="1789" height="990" alt="boundaries" src="https://github.com/user-attachments/assets/e3b124e5-dd8e-4e23-92de-d1ed2a47118a" />
+Classification based on Sepal dimensions
+<img width="1789" height="990" alt="boundaries_sepal" src="https://github.com/user-attachments/assets/92daafc4-8aad-410a-b0c8-ec059691f5ea" />
+Classification based on Petal dimensions
+<img width="1790" height="990" alt="boundaries_petal" src="https://github.com/user-attachments/assets/04d66a18-81c2-4e19-8af9-389bf723aa74" />
+
 
 ## Project Setup and Execution
 
